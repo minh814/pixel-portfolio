@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Editor // Pixel Portfolio</title>
-  
+
   <!-- Pixel Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +15,8 @@
     :root {
       --bg: #0f1115;
       --card-bg: #181c24;
-      --accent: #00ff66; /* Retro Neon Green */
+      --accent: #00ff66;
+      /* Retro Neon Green */
       --accent-dim: #00b347;
       --text: #e0e6ed;
       --text-muted: #8b9bb4;
@@ -37,7 +39,7 @@
       font-size: 20px;
       line-height: 1.4;
       padding: 0 1rem;
-      background-image: 
+      background-image:
         linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
         linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
       background-size: 100% 4px, 6px 100%;
@@ -86,7 +88,9 @@
     }
 
     @keyframes blink {
-      50% { opacity: 0; }
+      50% {
+        opacity: 0;
+      }
     }
 
     /* Hero Section */
@@ -171,7 +175,7 @@
       background: var(--accent);
     }
 
-    /* Video Frame */
+    /* Video Frame (Showreel) */
     .showreel-wrapper {
       position: relative;
       padding-bottom: 56.25%;
@@ -218,7 +222,8 @@
       cursor: pointer;
     }
 
-    .tab-btn.active, .tab-btn:hover {
+    .tab-btn.active,
+    .tab-btn:hover {
       background: var(--accent);
       color: #000;
       border-color: #000;
@@ -253,10 +258,22 @@
       background: #0d0f12;
       overflow: hidden;
       border-bottom: 3px solid #222734;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
+    /* Short form 9:16 */
     .project-card.short-form .project-thumb {
       aspect-ratio: 9/16;
+    }
+
+    .project-thumb iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+      /* Allows card click event */
     }
 
     .project-thumb img {
@@ -273,11 +290,12 @@
       align-items: center;
       justify-content: center;
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.8rem;
-      background: rgba(0, 0, 0, 0.4);
+      font-size: 0.75rem;
+      background: rgba(0, 0, 0, 0.45);
       color: var(--accent);
       opacity: 0;
       transition: opacity 0.1s;
+      text-shadow: 1px 1px 0 #000;
     }
 
     .project-card:hover .play-overlay {
@@ -362,7 +380,7 @@
       text-decoration: underline;
     }
 
-    /* Modal */
+    /* Modal Popup */
     .modal {
       display: none;
       position: fixed;
@@ -376,11 +394,28 @@
 
     .modal-box {
       width: 100%;
-      max-width: 800px;
+      max-width: 850px;
       background: #000;
       border: 4px solid var(--accent);
       box-shadow: 8px 8px 0px #000;
       position: relative;
+    }
+
+    /* Chế độ xem modal cho video dọc 9:16 */
+    .modal-box.vertical-mode {
+      max-width: 420px;
+    }
+
+    .modal-content-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      /* default 16:9 */
+      height: 0;
+    }
+
+    .modal-box.vertical-mode .modal-content-frame {
+      padding-bottom: 150%;
+      /* 9:16 ratio */
     }
 
     .modal-close {
@@ -395,12 +430,78 @@
       padding: 0.3rem 0.6rem;
       cursor: pointer;
     }
+
+    /* Pixel Contact Form */
+    .pixel-form {
+      max-width: 540px;
+      margin: 1.5rem auto 1rem;
+      text-align: left;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .pixel-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.75rem 1rem;
+      background: #000;
+      border: 3px solid #333a4d;
+      color: var(--accent);
+      font-family: 'VT323', monospace;
+      font-size: 1.3rem;
+      box-shadow: 4px 4px 0px #000;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .pixel-input:focus {
+      border-color: var(--accent);
+    }
+
+    .pixel-input::placeholder {
+      color: #556277;
+    }
+
+    .pixel-textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .pixel-form .btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .form-status {
+      font-size: 1.15rem;
+      margin-top: 0.85rem;
+      min-height: 1.5rem;
+      font-family: 'VT323', monospace;
+      text-align: center;
+    }
+
+    .form-status.success {
+      color: var(--accent);
+    }
+
+    .form-status.error {
+      color: #ff3333;
+    }
   </style>
 </head>
+
+
 <body>
 
   <div class="container">
-    
+
     <!-- Top Status Bar -->
     <div class="status-bar">
       <div class="rec-indicator"><span class="rec-dot"></span>REC [4K 60FPS]</div>
@@ -410,7 +511,8 @@
     <!-- Hero Section -->
     <header class="hero pixel-box">
       <h1>CUT. SYNC. <span>RENDER.</span></h1>
-      <p>> Video Editor & Visual Storyteller. Transforming raw footage into high-retention narratives with sharp pacing, immersive sound design, and clean visuals.</p>
+      <p>> Video Editor & Visual Storyteller. Transforming raw footage into high-retention narratives with sharp pacing,
+        immersive sound design, and clean visuals.</p>
       <a href="#contact" class="btn">[ GET IN TOUCH ]</a>
     </header>
 
@@ -430,8 +532,8 @@
 
     <!-- Featured Showreel -->
     <div class="pixel-box showreel-wrapper">
-      <!-- Replace with your showreel YouTube link -->
-      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0" title="Featured Showreel" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0" title="Featured Showreel"
+        allowfullscreen></iframe>
     </div>
 
     <!-- Work Section -->
@@ -446,22 +548,39 @@
       </div>
 
       <div class="grid" id="projectGrid">
-        <!-- Project 1 (Short-form) -->
-        <div class="project-card short-form" data-category="short" onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+
+        <!-- Project 1: Instagram Reel 1 -->
+        <div class="project-card short-form" data-category="short"
+          onclick="openModal('https://www.instagram.com/reel/DcxYmC4TKEo/embed/', true)">
           <div class="project-thumb">
-            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80" alt="Fitness Motivation Reel">
-            <div class="play-overlay">> PLAY_VIDEO</div>
+            <iframe src="https://www.instagram.com/reel/DcxYmC4TKEo/embed/" scrolling="no"></iframe>
+            <div class="play-overlay">> PLAY_REEL</div>
           </div>
           <div class="project-desc">
-            <h3>WORKOUT_REEL_01</h3>
-            <p>High Pacing // Hard Cuts // Foley & SFX</p>
+            <h3>INSTA_REEL_01</h3>
+            <p>Fast Pacing // Sound Design // Dynamic Motion</p>
           </div>
         </div>
 
-        <!-- Project 2 (Cinematic) -->
-        <div class="project-card" data-category="cinematic" onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+        <!-- Project 2: Instagram Reel / Post 2 -->
+        <div class="project-card short-form" data-category="short"
+          onclick="openModal('https://www.instagram.com/p/DdZUfi4h2Zf/embed/', true)">
           <div class="project-thumb">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" alt="Travel Vlog Documentary">
+            <iframe src="https://www.instagram.com/p/DdZUfi4h2Zf/embed/" scrolling="no"></iframe>
+            <div class="play-overlay">> PLAY_REEL</div>
+          </div>
+          <div class="project-desc">
+            <h3>INSTA_REEL_02</h3>
+            <p>Story Arc // Speed Ramping // Visual Hooks</p>
+          </div>
+        </div>
+
+        <!-- Project 3: 16:9 Cinematic Video -->
+        <div class="project-card" data-category="cinematic"
+          onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ', false)">
+          <div class="project-thumb">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80"
+              alt="Travel Vlog Documentary">
             <div class="play-overlay">> PLAY_VIDEO</div>
           </div>
           <div class="project-desc">
@@ -470,17 +589,6 @@
           </div>
         </div>
 
-        <!-- Project 3 (Short-form) -->
-        <div class="project-card short-form" data-category="short" onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
-          <div class="project-thumb">
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80" alt="Minimal Desk Setup Reel">
-            <div class="play-overlay">> PLAY_VIDEO</div>
-          </div>
-          <div class="project-desc">
-            <h3>MINIMAL_SETUP_REEL</h3>
-            <p>Speed Ramping // Macro B-roll // Clean Titles</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -488,24 +596,43 @@
     <div class="pixel-box skills-box">
       <h3>[ TOOLBOX & CAPABILITIES ]</h3>
       <div class="skill-tags">
-        <span class="skill-tag">DaVinci Resolve</span>
-        <span class="skill-tag">Premiere Pro</span>
-        <span class="skill-tag">CapCut Pro</span>
-        <span class="skill-tag">After Effects</span>
-        <span class="skill-tag">Color Grading</span>
+        <span class="skill-tag">Capcut Pro</span>
+        <span class="skill-tag">Davinci Resolve</span>
         <span class="skill-tag">Sound Design & Foley</span>
         <span class="skill-tag">Dynamic Pacing</span>
         <span class="skill-tag">FFmpeg Automation</span>
+        <span class="skill-tag">Fair Use Content</span>
+        <span class="skill-tag">Fresher Design</span>
       </div>
     </div>
 
     <!-- Contact Footer -->
     <footer class="footer" id="contact">
       <h3>LET'S BUILD SOMETHING SICK</h3>
-      <p>> Available for ongoing creator retainers, brand campaigns, and commercial edits.</p>
-      <br>
-      <a href="mailto:your.email@example.com" class="btn">[ SEND_EMAIL ]</a>
-      
+      <p>> Drop your brief or contact below. I'll get back to you within 24h.</p>
+
+      <!-- Pixel Web3Form -->
+      <form class="pixel-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+        <!-- Web3Forms Access Key -->
+        <input type="hidden" name="access_key" value="54d30674-9ed2-4b9c-8489-b8d01f83c207">
+        <input type="hidden" name="subject" value="New Portfolio Inquiry - Video Editing">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+        <div class="form-row">
+          <input type="text" name="name" placeholder="YOUR_NAME" required autocomplete="off" class="pixel-input">
+          <input type="email" name="email" placeholder="YOUR_EMAIL@DOMAIN.COM" required autocomplete="off"
+            class="pixel-input">
+        </div>
+
+        <div class="form-row">
+          <textarea name="message" rows="3" placeholder="PROJECT_DETAILS_OR_IDEA..." required
+            class="pixel-input pixel-textarea"></textarea>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">[ SEND_TRANSMISSION ]</button>
+        <p id="formStatus" class="form-status"></p>
+      </form>
+
       <div class="footer-links">
         <a href="https://instagram.com" target="_blank">[Instagram]</a>
         <a href="https://youtube.com" target="_blank">[YouTube]</a>
@@ -513,48 +640,129 @@
       </div>
     </footer>
 
-  </div>
-
-  <!-- Video Modal -->
-  <div class="modal" id="videoModal" onclick="closeModal(event)">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal()">[X] CLOSE</button>
-      <div style="position: relative; padding-bottom: 56.25%; height: 0;">
-        <iframe id="modalIframe" src="" style="position: absolute; inset: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal" onclick="closeModal(event)">
+      <div class="modal-box" id="modalBox" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">[X] CLOSE</button>
+        <div class="modal-content-frame">
+          <iframe id="modalIframe" src="" style="position: absolute; inset: 0; width: 100%; height: 100%; border: none;"
+            allowfullscreen></iframe>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    // Tab Filter Logic
-    function filterProjects(category) {
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach(tab => tab.classList.remove('active'));
-      event.target.classList.add('active');
+    <script>
+      // Tab Filter Logic
+      function filterProjects(category) {
+        const tabs = document.querySelectorAll('.tab-btn');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
 
-      const cards = document.querySelectorAll('.project-card');
-      cards.forEach(card => {
-        if (category === 'all' || card.getAttribute('data-category') === category) {
-          card.style.display = 'block';
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      // Modal Video Popup Logic
+      const modal = document.getElementById('videoModal');
+      const modalBox = document.getElementById('modalBox');
+      const iframe = document.getElementById('modalIframe');
+
+      function openModal(url, isVertical = false) {
+        if (isVertical) {
+          modalBox.classList.add('vertical-mode');
+          iframe.src = url;
         } else {
-          card.style.display = 'none';
+          modalBox.classList.remove('vertical-mode');
+          iframe.src = url + (url.includes('?') ? '&' : '?') + 'autoplay=1';
+        }
+        modal.style.display = 'flex';
+      }
+
+      function closeModal() {
+        modal.style.display = 'none';
+        iframe.src = '';
+      }
+      // AJAX Submit cho Pixel Form
+      const leadForm = document.getElementById('leadForm');
+      const formStatus = document.getElementById('formStatus');
+
+      leadForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        formStatus.className = 'form-status';
+        formStatus.innerText = '> TRANSMITTING_DATA...';
+
+        const formData = new FormData(leadForm);
+
+        try {
+          const response = await fetch(leadForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (response.ok) {
+            formStatus.className = 'form-status success';
+            formStatus.innerText = '> RECEIVED! I WILL CONTACT YOU SOON.';
+            leadForm.reset();
+          } else {
+            formStatus.className = 'form-status error';
+            formStatus.innerText = '> ERROR: TRANSMISSION FAILED. TRY AGAIN.';
+          }
+        } catch (err) {
+          formStatus.className = 'form-status error';
+          formStatus.innerText = '> NETWORK ERROR. PLEASE TRY AGAIN LATER.';
         }
       });
-    }
+      // Web3Forms AJAX Handling
+      const form = document.getElementById('contactForm');
+      const statusText = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
 
-    // Modal Video Popup Logic
-    const modal = document.getElementById('videoModal');
-    const iframe = document.getElementById('modalIframe');
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        statusText.className = 'form-status';
+        statusText.innerText = '> TRANSMITTING_DATA...';
+        submitBtn.disabled = true;
 
-    function openModal(url) {
-      iframe.src = url + "?autoplay=1";
-      modal.style.display = 'flex';
-    }
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
 
-    function closeModal() {
-      modal.style.display = 'none';
-      iframe.src = '';
-    }
-  </script>
+        try {
+          const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: json
+          });
+
+          const result = await response.json();
+
+          if (response.status === 200) {
+            statusText.className = 'form-status success';
+            statusText.innerText = '> STATUS 200: TRANSMISSION RECEIVED! TALK SOON.';
+            form.reset();
+          } else {
+            statusText.className = 'form-status error';
+            statusText.innerText = '> ERROR: ' + (result.message || 'TRANSMISSION FAILED.');
+          }
+        } catch (error) {
+          statusText.className = 'form-status error';
+          statusText.innerText = '> NETWORK ERROR. PLEASE TRY AGAIN LATER.';
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+    </script>
+
 </body>
+
 </html>
