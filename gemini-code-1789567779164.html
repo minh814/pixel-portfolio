@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Editor // Pixel Portfolio</title>
+  
+  <!-- Pixel Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card-bg: #181c24;
+      --accent: #00ff66; /* Retro Neon Green */
+      --accent-dim: #00b347;
+      --text: #e0e6ed;
+      --text-muted: #8b9bb4;
+      --pixel-border: 3px solid #000;
+      --pixel-shadow: 4px 4px 0px #000;
+      --pixel-shadow-accent: 4px 4px 0px var(--accent);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      image-rendering: pixelated;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      line-height: 1.4;
+      padding: 0 1rem;
+      background-image: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 4px, 6px 100%;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 0 5rem;
+    }
+
+    /* Pixel Box Container */
+    .pixel-box {
+      background: var(--card-bg);
+      border: 3px solid #333a4d;
+      box-shadow: var(--pixel-shadow);
+      position: relative;
+    }
+
+    /* Header & Rec Indicator */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      background: #000;
+      border: 2px solid #222;
+      margin-bottom: 2rem;
+    }
+
+    .rec-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #ff3333;
+    }
+
+    .rec-dot {
+      width: 10px;
+      height: 10px;
+      background: #ff3333;
+      display: inline-block;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 2.5rem 1.25rem;
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 2rem);
+      line-height: 1.5;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      text-shadow: 3px 3px 0px #222;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.35rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* Pixel Buttons */
+    .btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.75rem;
+      padding: 0.8rem 1.4rem;
+      color: #000;
+      background-color: var(--accent);
+      border: 3px solid #000;
+      box-shadow: 4px 4px 0px #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #fff;
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #fff;
+    }
+
+    /* Timeline Decorative Bar */
+    .timeline-deco {
+      padding: 0.8rem 1rem;
+      background: #090a0d;
+      border: 2px solid #222;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tracks {
+      display: flex;
+      gap: 4px;
+    }
+
+    .track-block {
+      width: 24px;
+      height: 8px;
+      background: #252b3b;
+    }
+
+    .track-block.active {
+      background: var(--accent);
+    }
+
+    /* Video Frame */
+    .showreel-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      background: #000;
+      margin-bottom: 4rem;
+    }
+
+    .showreel-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Filter Tabs */
+    .filter-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .filter-section h2 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      font-family: 'VT323', monospace;
+      font-size: 1.3rem;
+      background: #181c24;
+      color: var(--text-muted);
+      border: 2px solid #333a4d;
+      padding: 0.2rem 0.8rem;
+      cursor: pointer;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: #000;
+      box-shadow: 2px 2px 0px #000;
+    }
+
+    /* Project Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .project-card {
+      background: #181c24;
+      border: 3px solid #222734;
+      box-shadow: 4px 4px 0px #000;
+      cursor: pointer;
+      transition: all 0.15s steps(2);
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0px #000;
+    }
+
+    .project-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: #0d0f12;
+      overflow: hidden;
+      border-bottom: 3px solid #222734;
+    }
+
+    .project-card.short-form .project-thumb {
+      aspect-ratio: 9/16;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(110%) brightness(90%);
+    }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.8rem;
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    .project-card:hover .play-overlay {
+      opacity: 1;
+    }
+
+    .project-desc {
+      padding: 1rem;
+    }
+
+    .project-desc h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    .project-desc p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+    }
+
+    /* Skills Box */
+    .skills-box {
+      padding: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .skills-box h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      background: #0d0f12;
+      border: 1px solid #333a4d;
+      padding: 0.2rem 0.6rem;
+      font-size: 1.15rem;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: #0d0f12;
+      border: 3px solid #222734;
+      box-shadow: 4px 4px 0px #000;
+    }
+
+    .footer h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      font-size: 1.3rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 800px;
+      background: #000;
+      border: 4px solid var(--accent);
+      box-shadow: 8px 8px 0px #000;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -35px;
+      right: 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.8rem;
+      color: #fff;
+      background: #ff3333;
+      border: 2px solid #000;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Status Bar -->
+    <div class="status-bar">
+      <div class="rec-indicator"><span class="rec-dot"></span>REC [4K 60FPS]</div>
+      <div>TIMECODE: 00:01:24:12</div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero pixel-box">
+      <h1>CUT. SYNC. <span>RENDER.</span></h1>
+      <p>> Video Editor & Visual Storyteller. Transforming raw footage into high-retention narratives with sharp pacing, immersive sound design, and clean visuals.</p>
+      <a href="#contact" class="btn">[ GET IN TOUCH ]</a>
+    </header>
+
+    <!-- Interactive Editor Bar Decor -->
+    <div class="timeline-deco">
+      <span>TIMELINE: V1 + A1/A2</span>
+      <div class="tracks">
+        <div class="track-block active"></div>
+        <div class="track-block active"></div>
+        <div class="track-block"></div>
+        <div class="track-block active"></div>
+        <div class="track-block active"></div>
+        <div class="track-block"></div>
+      </div>
+      <span>RENDER_STATUS: READY</span>
+    </div>
+
+    <!-- Featured Showreel -->
+    <div class="pixel-box showreel-wrapper">
+      <!-- Replace with your showreel YouTube link -->
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&rel=0" title="Featured Showreel" allowfullscreen></iframe>
+    </div>
+
+    <!-- Work Section -->
+    <section id="work">
+      <div class="filter-section">
+        <h2>[ SELECTED_PROJECTS ]</h2>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="filterProjects('all')">ALL</button>
+          <button class="tab-btn" onclick="filterProjects('short')">SHORTS (9:16)</button>
+          <button class="tab-btn" onclick="filterProjects('cinematic')">CINEMATIC (16:9)</button>
+        </div>
+      </div>
+
+      <div class="grid" id="projectGrid">
+        <!-- Project 1 (Short-form) -->
+        <div class="project-card short-form" data-category="short" onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+          <div class="project-thumb">
+            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80" alt="Fitness Motivation Reel">
+            <div class="play-overlay">> PLAY_VIDEO</div>
+          </div>
+          <div class="project-desc">
+            <h3>WORKOUT_REEL_01</h3>
+            <p>High Pacing // Hard Cuts // Foley & SFX</p>
+          </div>
+        </div>
+
+        <!-- Project 2 (Cinematic) -->
+        <div class="project-card" data-category="cinematic" onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+          <div class="project-thumb">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" alt="Travel Vlog Documentary">
+            <div class="play-overlay">> PLAY_VIDEO</div>
+          </div>
+          <div class="project-desc">
+            <h3>NORTH_LOOP_JOURNEY.MOV</h3>
+            <p>Teal & Orange // Story Arc // Ambience</p>
+          </div>
+        </div>
+
+        <!-- Project 3 (Short-form) -->
+        <div class="project-card short-form" data-category="short" onclick="openModal('https://www.youtube.com/embed/dQw4w9WgXcQ')">
+          <div class="project-thumb">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80" alt="Minimal Desk Setup Reel">
+            <div class="play-overlay">> PLAY_VIDEO</div>
+          </div>
+          <div class="project-desc">
+            <h3>MINIMAL_SETUP_REEL</h3>
+            <p>Speed Ramping // Macro B-roll // Clean Titles</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills / Stack Box -->
+    <div class="pixel-box skills-box">
+      <h3>[ TOOLBOX & CAPABILITIES ]</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">DaVinci Resolve</span>
+        <span class="skill-tag">Premiere Pro</span>
+        <span class="skill-tag">CapCut Pro</span>
+        <span class="skill-tag">After Effects</span>
+        <span class="skill-tag">Color Grading</span>
+        <span class="skill-tag">Sound Design & Foley</span>
+        <span class="skill-tag">Dynamic Pacing</span>
+        <span class="skill-tag">FFmpeg Automation</span>
+      </div>
+    </div>
+
+    <!-- Contact Footer -->
+    <footer class="footer" id="contact">
+      <h3>LET'S BUILD SOMETHING SICK</h3>
+      <p>> Available for ongoing creator retainers, brand campaigns, and commercial edits.</p>
+      <br>
+      <a href="mailto:your.email@example.com" class="btn">[ SEND_EMAIL ]</a>
+      
+      <div class="footer-links">
+        <a href="https://instagram.com" target="_blank">[Instagram]</a>
+        <a href="https://youtube.com" target="_blank">[YouTube]</a>
+        <a href="https://t.me" target="_blank">[Telegram]</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Video Modal -->
+  <div class="modal" id="videoModal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">[X] CLOSE</button>
+      <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+        <iframe id="modalIframe" src="" style="position: absolute; inset: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab Filter Logic
+    function filterProjects(category) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Modal Video Popup Logic
+    const modal = document.getElementById('videoModal');
+    const iframe = document.getElementById('modalIframe');
+
+    function openModal(url) {
+      iframe.src = url + "?autoplay=1";
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      iframe.src = '';
+    }
+  </script>
+</body>
+</html>
